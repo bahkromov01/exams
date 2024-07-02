@@ -5,25 +5,23 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'shop_index' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">Hamma mahsulotlar</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Kir yuvish mashinalari</a></li>
-                                <li><a class="dropdown-item" href="#!">	Televizorlar</a></li>
-                                <li><a class="dropdown-item" href="#!">	Smartfon, telefon, gadjet, aksessuarlar</a></li>
+                                {% for category in categories %}
+                                <li><a class="dropdown-item" href="{% url 'category_index' category.slug %}">{{ category.title }}</a>
+                                {% endfor %}
                             </ul>
                         </li>
                     </ul>
-                    <form class="d-flex">
-                        <input type="text" class="form-contro">
+                    <form class="d-flex" method="get">
+                        <input type="text" class="form-contro" name="search">
                         <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-search-fill me-1"></i>
+                            <i class="bi-search-fill me-1">
+                            </i>
                             Search
-
                         </button>
                     </form>
                 </div>

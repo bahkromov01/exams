@@ -1,9 +1,11 @@
 
 from django.urls import path
 
-from app.views import shop_index, products_list
+from app.views import shop_index, products_detail, category_index
 
 urlpatterns = [
     path('shop_index/', shop_index, name='shop_index'),
-    path('product_list/<int:product_id>', products_list, name='product_list')
+    path('category/<slug:category_slug>/products', category_index, name='category_index'),
+    path('products_detail/<slug:slug>', products_detail, name='products_detail'),
+
 ]
