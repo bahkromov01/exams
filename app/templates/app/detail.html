@@ -45,22 +45,22 @@
                     </div>
                     <p class="lead">{{ product.description }}</p>
                     <div class="d-flex">
-                        <form method="post">
+
+                        <form method="post" action="{% url 'add_order' product.slug %}">
                             {% csrf_token %}
                             <div class="form-group">
                                 <h2>Place an order</h2>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="formGroupExampleInput">Your name</label>
-                                <input type="text" class="form-control" placeholder="Enter a name" name="name">
+                                <input type="text" class="form-control" name="name" placeholder="Enter a name" >
                             </div>
                             <div class="form-group mb-3">
                                 <label for="formGroupExampleInput2">Your Email</label>
-                                <input type="email" class="form-control" placeholder="Enter an email"
-                                       name="order_email">
+                                <input type="email" class="form-control" name="order_email" placeholder="Enter an email">
                             </div>
                             <div class="form-group mb-3">
-                              <input type="text" class="btn btn-success" value="Send">
+                              <input type="submit" class="btn btn-success" value="Send">
                             </div>
                         </form>
                     </div>
@@ -68,22 +68,24 @@
             </div>
         </div>
     </section>
-     {% if product.comments %}
+
     <div class="container mt-4 mb-4">
         <div class="row">
                 <div class="col-12">
                 <div class="text-center">
-                    <h2>Latest comments</h2>
+                    <h2>Latest comments ({{ comments.count }})</h2>
                 </div>
-                     {% for comment in comments %}
+                    {% for comment in comments %}
                     <div class="media card p-4 mt-2">
                         <div class="media-body">
                             <h3 class="mt-0">{{ comment.name}}</h3>
+                            <h4>
+                                {{ comment.created_at }}
+                            </h4>
                             {{ comment.body}}
                         </div>
                     </div>
                     {% endfor %}
-                    {% endif %}
             </div>
             <div class="col-8 offset-2 mt-5">
 
@@ -91,15 +93,15 @@
                     <div class="text-center">
                         <h3>Add Comment</h3>
                     </div>
-                    <form method="post" style="margin-top: 1.3em;">
+                    <form method="post" action="{% url 'add_comment' product.slug %}">
                         {% csrf_token %}
                         <div class="form-group mb-3">
                             <label for="formGroupExampleInput">Your name</label>
-                            <input type="text" class="form-control" placeholder="Enter a name" name="name">
+                            <input type="text" class="form-control" name="name" placeholder="Enter a name" >
                         </div>
                         <div class="form-group mb-3">
                             <label for="formGroupExampleInput2">Your email</label>
-                            <input type="text" class="form-control" placeholder="Enter a email" name="email">
+                            <input type="text" class="form-control" name="email" placeholder="Enter a email" >
                         </div>
 
                         <div class="form-group mb-3">

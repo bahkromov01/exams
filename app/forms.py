@@ -1,16 +1,15 @@
 from django import forms
-from app.models import Product, Comment, Order
+from app.models import Comment, Order
 
 
-class OrderForm(forms.ModelForm):
+class OrderModelForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ()
+        fields = ('name', 'email')
 
-class CommentForm(forms.ModelForm):
+
+class CommentModelForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['name', 'email', 'body']
-        widgets = {
-            'product': forms.HiddenInput()
-        }
+        fields = ('name', 'email', 'body')
+
