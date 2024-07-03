@@ -2,6 +2,7 @@ from datetime import timezone, datetime
 from difflib import context_diff
 from itertools import product
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.messages.context_processors import messages
 from django.core.checks import messages
 from django.http import HttpResponseRedirect
@@ -13,6 +14,7 @@ from app.models import Category, Product, Comment, Order
 from django.db import models
 from app.forms import CommentModelForm, OrderModelForm
 
+@login_required(login_url='http://127.0.0.1:8000/admin/login/?next=/admin/')
 
 # Create your views here.
 
