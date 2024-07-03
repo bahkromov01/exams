@@ -15,16 +15,30 @@
         </header>
 <!-- Section-->
 <div class="container mt-5">
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
             <div class="text-left">
                 <h3>Filter by</h3>
             </div>
             <div class="row">
                 <div class="col-1">
-                    <a class="btn btn-outline-dark mt-auto" href="#"> Expensive </a>
+                    <a class="btn btn-outline-dark mt-auto" href="?expensive=true"> Expensive </a>
                 </div>
 
                 <div class="col-1">
-                    <a class="btn btn-outline-dark mt-auto" href="#"> Cheap </a>
+                    <a class="btn btn-outline-dark mt-auto" href="?cheap=true"> Cheap </a>
                 </div>
 
                 <div class="col-1">
@@ -51,7 +65,27 @@
                                     <h5 class="fw-bolder">{{ product.name }}</h5>
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill">{{ product.rating }}</div>>
+                                         {% if product.rating == 1 %}
+                                            <div class="bi-star-fill"></div>
+                                        {% elif product.rating == 2 %}
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                        {% elif product.rating == 3 %}
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                        {% elif product.rating == 4 %}
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                        {% elif product.rating == 5 %}
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                            <div class="bi-star-fill"></div>
+                                        {% endif %}
                                     </div>
                                     <!-- Product price-->
                                     <span class="text-muted text-decoration-line-through">${{ product.price }}</span>

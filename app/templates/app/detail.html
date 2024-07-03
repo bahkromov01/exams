@@ -16,6 +16,29 @@
                         {% if products.discount %}
                             <span class="text-decoration-line-through">${{ product.price }}</span>
                             <span>${{ product.discount }}</span>
+                             <div class="d-flex justify-content-lg-start small text-warning mb-2">
+                            {% if product.rating == 1 %}
+                                <div class="bi-star-fill"></div>
+                            {% elif product.rating == 2 %}
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            {% elif product.rating == 3 %}
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            {% elif product.rating == 4 %}
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            {% elif product.rating == 5 %}
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                                <div class="bi-star-fill"></div>
+                            {% endif %}
+                        </div>
                         {% else %}
                             <span>${{ product.price }}</span>
                         {% endif %}
@@ -28,11 +51,11 @@
                                 <h2>Place an order</h2>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="formGroupExampleInput">{{ new_comment.name }}</label>
+                                <label for="formGroupExampleInput">Your name</label>
                                 <input type="text" class="form-control" placeholder="Enter a name" name="name">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="formGroupExampleInput2">{{ new_comment.email}}</label>
+                                <label for="formGroupExampleInput2">Your Email</label>
                                 <input type="email" class="form-control" placeholder="Enter an email"
                                        name="order_email">
                             </div>
@@ -45,39 +68,42 @@
             </div>
         </div>
     </section>
+     {% if product.comments %}
     <div class="container mt-4 mb-4">
         <div class="row">
                 <div class="col-12">
                 <div class="text-center">
                     <h2>Latest comments</h2>
                 </div>
+                     {% for comment in comments %}
                     <div class="media card p-4 mt-2">
                         <div class="media-body">
-                            <h3 class="mt-0">{{ new_comment.name}}</h3>
-                            {{ new_comment.email}}
+                            <h3 class="mt-0">{{ comment.name}}</h3>
+                            {{ comment.body}}
                         </div>
                     </div>
+                    {% endfor %}
+                    {% endif %}
             </div>
-
             <div class="col-8 offset-2 mt-5">
 
                 <div class=" p-5">
                     <div class="text-center">
                         <h3>Add Comment</h3>
                     </div>
-                    <form method="post">
+                    <form method="post" style="margin-top: 1.3em;">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="formGroupExampleInput">{{ comments.name }}</label>
+                            <label for="formGroupExampleInput">Your name</label>
                             <input type="text" class="form-control" placeholder="Enter a name" name="name">
                         </div>
                         <div class="form-group mb-3">
-                            <label for="formGroupExampleInput2">{{comments.email}}</label>
+                            <label for="formGroupExampleInput2">Your email</label>
                             <input type="text" class="form-control" placeholder="Enter a email" name="email">
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="formGroupExampleInput2">{{ comments.body }}</label>
+                            <label for="formGroupExampleInput2">Your comment</label>
                             <textarea name="body" class="form-control" id="" cols="30" rows="10"></textarea>
                         </div>
                         <div class="form-group mb-3">

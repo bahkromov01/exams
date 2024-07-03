@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 # Create your models here.
@@ -85,5 +86,3 @@ class Comment(models.Model):
         return f'Comment by {self.name} on {self.product}'
         pass
 
-    def get_replies(self):
-        return Comment.objects.filter(product=self).order_by('created_at')

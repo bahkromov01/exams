@@ -11,26 +11,30 @@ from django.contrib import messages
 
 from app.models import Category, Product, Comment, Order
 from django.db import models
-from .forms import CommentForm, OrderForm
+from app.forms import CommentForm, OrderForm
 
 
 # Create your views here.
 
 
 def shop_index(request, category_slug=None):
+    categories = Category.objects.all()
     search = request.GET.get('search')
     if search:
         products = Product.objects.filter(Q(name__icontains=search))
     else:
-        categories = Category.objects.all()
         products = Product.objects.all()
-        if category_slug:
-            products = products.filter(category__slug=category_slug)
-            pass
-
+    if category_slug:
+        products = products.filter(category__slug=category_slug)
+    filter_expensive = request.GET.get('expensive')
+    filter_cheap = request.GET.get('cheap')
+    if filter_expensive:
+        products = products.order_by('-price')[:3]
+    elif filter_cheap:
+        products = products.order_by('price')[:3]
     context = {
         'products': products,
-        'categories': categories,
+        'categories': categories
     }
     return render(request, 'app/home.html', context)
 
@@ -61,25 +65,35 @@ def products_detail(request, slug):
 #     context = {'products': product}
 #     return render(request, 'app/detail.html', context)
 
+
 def add_comment(request, slug):
-    order = get_object_or_404(Order, slug=slug)
-    comments = Comment.objects.filter(order=order)
+    product = Product.objects.get(slug=slug)
+    related_product = Product.objects.filter(slug=slug)
+    comments = Comment.objects.filter(product__slug=slug)
+    comment_form = CommentForm()
+    order_form = OrderForm()
     new_comment = None
+    new_order = None
 
     if request.method == 'POST':
-        form = CommentForm(data=request.POST)
-        if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.order = order
+        comment_form = CommentForm(data=request.POST)
+        order_form = OrderForm(data=request.POST)
+        if comment_form.is_valid() and order_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.product = product
             new_comment.save()
-            return redirect('products_detail', slug=slug)
-    else:
 
-        form = CommentForm()
-        context = {
-            'form': form,
-            'order': order,
-            'comments': comments,
-            'new_comment': new_comment
-        }
-    return render(request,'app/detail.html', context)
+        elif order_form.is_valid():
+            new_order = order_form.save(commit=False)
+            new_order.product = product
+            new_order.save()
+            messages.add_message(
+                request, messages.SUCCESS,'Product added successfully!')
+
+    return render(request, 'app/detail.html',
+                  {'product': product,
+                           'new_comment': new_comment,
+                           'order_form': order_form, 'comment_form': comment_form,
+                           'new_order': new_order,
+                           'comments': comments,
+                           'related_product': related_product})
